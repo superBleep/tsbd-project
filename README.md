@@ -81,4 +81,5 @@ Metrica aleasă `COSINE` este una standard pentru conținut text, ce evaluează 
 ---
 
 Albei Liviu, Codreanu Radu, Florian Luca-Paul
+
 FMI, BDTS, Anul II, 2026
