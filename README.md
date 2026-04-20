@@ -16,7 +16,7 @@ Deoarece vectorii sunt stocați ca tipuri native de date pe lângă modelul rela
 
 ## Mitul performanței 
 
-Într-o bază de date mică, o căutare clasică de tip `LIKE` va fi mereu extrem de rapidă. Totuși, performanța adevărată în lucrul cu date nestructurate nu se măsoară doar în timpul de răspuns, ci în calitatea și relevanța rezultatelor. Degeaba o interogare se execută foarte rapid dacă, în final, va întoarce 0 rezultate utile (de ex, atunci când lipsește un cuvânt cheie). Vector Search reduce timpul pierdut de utilizator pentru a găsi informația corectă.
+Într-o bază de date mică, o căutare clasică de tip `LIKE` va fi mereu extrem de rapidă. Totuși, performanța adevărată în lucrul cu date nestructurate nu se măsoară doar în timpul de răspuns, ci și în calitatea și relevanța rezultatelor. Degeaba o interogare se execută foarte rapid dacă, în final, va întoarce 0 rezultate utile (de ex, atunci când lipsește un cuvânt cheie). Vector Search reduce timpul pierdut de utilizator pentru a găsi informația corectă.
 
 ## Arhitectura RAG (Retrieval-Augmented Generation)
 
@@ -81,10 +81,24 @@ Se poate observa cum, în acest caz, baza de date întoarce atât intrări de ti
 
 Metrica aleasă `COSINE` este una standard pentru conținut text, ce evaluează unghiul dintre cei doi vectori. Cât despre cel de-al doilea termen al comparației, acesta conține date *mocked*, întrucât pentru date reale ar fi fost nevoie de un model de *embedding* care face conversia din text în vectori numerici.
 
+De asemenea, am folosim vectori cu 3 dimensiuni pentru a fi lizibili și vizualizabili pe ecran (ex: [0.88, 0.12, 0.1]). În scenarii reale de producție, textul este trecut printr-un model ce are vectori cu 384, 768 sau chiar 1536 de dimensiuni.
+
+Acest scenariu acoperă partea de Retrieval a RAG, cea prin care informația este găsită. Într-o aplicație RAG, informația brută nu ajunge la utilizator, ci transmisă, mai întăi, către un LLM ce va genera un text specific rezultatului.
+
 ### Scenariul III
 În cel de-al treilea scenariu, vom efectua atât o filtrare „tradițională”, cât și una pe bază de vectori, pentru a extrage rezultatul dorit (creatură similară unui dragon, cu rata de subraviețuire peste 10%).
 
 ![Screenshot 7](./screenshots/screenshot-7.png)
+
+Query-ul aplică prima dată filtrele relaționale precise pe tabelele `habitats` și `encounters`, apoi ordonează rezultatele rămase în funcție de cât de bine se potrivește descrierea creaturii cu intenția noastră de căutare.
+
+### Scalabilitate
+
+Pentru a asigura scalabilitatea pe milioane de înregistrări, Oracle 23ai permite crearea unor indecși specializați. Astfel, am adăugat un index de tip HNSW (Hierarchical Navigable Small World) pentru performanță maximă.
+
+ss-uri to be added
+
+Fără index, baza de date ar fi trebuit să facă distanța Cosine pentru absolut fiecare creatură din tabel (Exact Nearest Neighbor) – o performanța scăzută la un număr mare de date. Datorită indexului HNSW, Oracle face un Approximate Nearest Neighbor (ANN). Navighează prin indexul vectorial și aduce rezultatul instant, fără să citească toate datele.
 
 ---
 
