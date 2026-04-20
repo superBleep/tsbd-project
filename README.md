@@ -1,6 +1,6 @@
 # Oracle AI Vector Search vs. căutare tradițională
 
-Proiectu de față prezintă o demonstrație practică ce compară căutarea tradițională pe bază de cuvinte cheie cu cea semantică oferită de **Oracle AI Vector Search**, în cadrul bazelor de date **Oracle 23ai**.
+Proiectul de față prezintă o demonstrație practică ce compară căutarea tradițională pe bază de cuvinte cheie cu cea semantică oferită de **Oracle AI Vector Search**, în cadrul bazelor de date **Oracle 23ai**.
 
 ## Arhitectura soluției
 Soluția rulează pe o singură instanță de Oracle 23ai instalată într-un container **Docker**.
@@ -13,6 +13,14 @@ Modelul de date constă într-o schemă cu trei tabele referitoare la **creaturi
 Tabelul principal `beasts` va găzdui o coloană de tip `VECTOR`, care conține reprezentarea matematică a descrierii creaturii în text.
 
 Deoarece vectorii sunt stocați ca tipuri native de date pe lângă modelul relațional obișnuit, administratorii pot executa interogări complexe care filtrează date din mai multe tabele și, concomitent, ordonează rezultatele în funcție de similaritatea semantică.
+
+## Mitul performanței 
+
+Într-o bază de date mică, o căutare clasică de tip `LIKE` va fi mereu extrem de rapidă. Totuși, performanța adevărată în lucrul cu date nestructurate nu se măsoară doar în timpul de răspuns, ci în calitatea și relevanța rezultatelor. Degeaba o interogare se execută foarte rapid dacă, în final, va întoarce 0 rezultate utile (de ex, atunci când lipsește un cuvânt cheie). Vector Search reduce timpul pierdut de utilizator pentru a găsi informația corectă.
+
+## Arhitectura RAG (Retrieval-Augmented Generation)
+
+Această funcționalitate reprezintă fundația aplicațiilor AI sigure și moderne. LLM-urile arhicunoscute precum ChatGPT sau Gemini, halucinează și nu au acces la date private. Prin Oracle AI Vector Search, se poate extrage rapid contextul relevant din baza de date (Retrieval) și se poate trimite către LLM pentru a formula un răspuns sigur, pe baza propriilor informații.
 
 ## Configurație software și hardware
 
