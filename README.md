@@ -92,13 +92,17 @@ Acest scenariu acoperă partea de Retrieval a RAG, cea prin care informația est
 
 Query-ul aplică prima dată filtrele relaționale precise pe tabelele `habitats` și `encounters`, apoi ordonează rezultatele rămase în funcție de cât de bine se potrivește descrierea creaturii cu intenția noastră de căutare.
 
-### Scalabilitate
+## Scalabilitate
 
 Pentru a asigura scalabilitatea pe milioane de înregistrări, Oracle 23ai permite crearea unor indecși specializați. Astfel, am adăugat un index de tip HNSW (Hierarchical Navigable Small World) pentru performanță maximă.
 
-ss-uri to be added
+![Screenshot 8](./screenshots/screenshot-8.png)
+
+*Notă: crearea de indecși de tip vector necesită alocarea/mărirea memoriei aferente vectorilor în baza de date*
 
 Fără index, baza de date ar fi trebuit să facă distanța Cosine pentru absolut fiecare creatură din tabel (Exact Nearest Neighbor) – o performanța scăzută la un număr mare de date. Datorită indexului HNSW, Oracle face un Approximate Nearest Neighbor (ANN). Navighează prin indexul vectorial și aduce rezultatul instant, fără să citească toate datele.
+
+![Screenshot 9](./screenshots/screenshot-9.png)
 
 ---
 
